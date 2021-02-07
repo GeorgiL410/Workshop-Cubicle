@@ -7,7 +7,7 @@ const services = require('../services/services');
 
 // add the different paths and handlers
 router.get('/', (req, res) => {
-  console.log(req.query);
+
   let items = services.getAllPuzzles(req.query);
   res.render('home', { title: 'Home', items });
 })
@@ -20,7 +20,7 @@ router.get('/create', (req, res) => {
   res.render('create', { title: 'Create' });
 })
 
-router.post('/create', (req, res) => {
+router.post('/create', services.validate, (req, res) => {
   services.create(req.body);
 
   res.redirect('/');

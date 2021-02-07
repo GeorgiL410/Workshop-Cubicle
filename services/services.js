@@ -44,8 +44,25 @@ const services = {
   },
   getDetails(id) {
     return db.find((x) => x.id == id);
+  },
+  validate(req, res, next) {
+    let isValid = false;
+
+    if (req.body.name.trim().length > 2) {
+      isValid = true;
+    } else {
+      isValid = false
+    }
+    if (req.body.imageUrl.trim().length > 5) {
+      isValid = true;
+    } else {
+      isValid = false
+    }
+    if (isValid) {
+      next();
+    } else {
+      res.redirect('/');
+    }
   }
-
 }
-
 module.exports = services;
