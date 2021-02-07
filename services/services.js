@@ -15,14 +15,7 @@ const services = {
       params.imageUrl,
       params.difficultyLevel
     );
-    db.push(cube);
-
-    fs.writeFile(path.join(__dirname, '../config/database.json'), JSON.stringify(db), (err) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-    })
+   return cube.save();
   },
   getAllPuzzles(searchParams) {
     //get all items
