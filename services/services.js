@@ -2,9 +2,7 @@
 
 const db = require('../config/database.json');
 const Model = require('../models/cube');
-const fs = require('fs');
 const uniqid = require('uniqid');
-const path = require('path');
 
 const services = {
   create(params) {
