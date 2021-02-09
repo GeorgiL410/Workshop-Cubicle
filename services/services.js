@@ -1,6 +1,5 @@
 //The purpose of this file is to navigate the database and record/retrieve data where necessary
 
-const db = require('../config/database.json');
 const Model = require('../models/cube');
 const uniqid = require('uniqid');
 
@@ -13,11 +12,11 @@ const services = {
       params.imageUrl,
       params.difficultyLevel
     );
-   return cube.save();
+    return cube.save();
   },
   getAllPuzzles(searchParams) {
     //get all items
-    let items = db;
+    let items = Model.getAll();
     //filter items based on search inputs (name, difficulty from/to)
     if (searchParams.search) {
       items = items.filter((x) => x.name.includes(searchParams.search));
@@ -34,7 +33,7 @@ const services = {
     return items;
   },
   getDetails(id) {
-    return db.find((x) => x.id == id);
+    return Model.getDetails(id);
   },
   validate(req, res, next) {
     let isValid = false;
