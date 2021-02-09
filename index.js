@@ -10,6 +10,9 @@ const config = require('./config/config')[env];
 const routes = require('./routes');
 //initialise express using express.js in the config folder
 require('./config/express')(app);
+//initialise mongoose using mongoose.js in the config folder
+require('./config/mongoose')(app);
+
 
 //use the routes file
 app.use(routes);
