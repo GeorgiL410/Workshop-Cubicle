@@ -46,7 +46,7 @@ router.get('/products/:productId/attach', async (req, res) => {
   let puzzle = await productServices.getDetails(id);
   let accessories = await accessoryServices.getAll();
 
-  res.render('attachAccessory', {puzzle})
+  res.render('attachAccessory', {puzzle, accessories})
 });
 
 router.get('*', (req, res) => {
