@@ -2,57 +2,73 @@
 
 const Cube = require('../models/cube');
 const Generic = require('../models/Model');
+const Accessory = require('../models/Accessory');
 
 
 
-  function create(data) {
-    let item = new Cube(data);
-    return item.save();
+function create(data) {
+  let item = new Cube(data);
+  return item.save();
+}
+async function getAllPuzzles(searchParams) {
+
+  let items = await Cube.find({}).lean();
+  //filter items based on search inputs (name, difficulty from/to)
+  if (searchParams.search) {
+    items = items.filter((x) => x.name.includes(searchParams.search));
   }
-  async function getAllPuzzles(searchParams) {
+  if (searchParams.from) {
+    items = items.filter((x) => x.difficulty >= searchParams.from);
 
-    let items = await Cube.find({}).lean();
-    //filter items based on search inputs (name, difficulty from/to)
-    if (searchParams.search) {
-      items = items.filter((x) => x.name.includes(searchParams.search));
-    }
-    if (searchParams.from) {
-      items = items.filter((x) => x.difficulty >= searchParams.from);
-
-    }
-    if (searchParams.to) {
-      items = items.filter((x) => x.difficulty <= searchParams.to);
-
-    }
-    //return the filtered items so that they can be populated
-    return items;
   }
-  function getDetails(id) {
-    return Cube.findById(id).lean();
-  }
- function validate(req, res, next) {
-    let isValid = false;
+  if (searchParams.to) {
+    items = items.filter((x) => x.difficulty <= searchParams.to);
 
-    if (req.body.name.trim().length > 2) {
-      isValid = true;
-    } else {
-      isValid = false
-    }
-    if (req.body.imageUrl.trim().length > 5) {
-      isValid = true;
-    } else {
-      isValid = false
-    }
-    if (isValid) {
-      next();
-    } else {
-      res.redirect('/products/');
-    }
   }
+  //return the filtered items so that they can be populated
+  return items;
+}
+function getDetails(id) {
+  return Cube.findById(id).lean();
+}
+function getFullDetails(id) {
+  return Cube.findById(id)
+  .populate('accessories')
+  .lean();
+}
+
+function validate(req, res, next) {
+  let isValid = false;
+
+  if (req.body.name.trim().length > 2) {
+    isValid = true;
+  } else {
+    isValid = false
+  }
+  if (req.body.imageUrl.trim().length > 5) {
+    isValid = true;
+  } else {
+    isValid = false
+  }
+  if (isValid) {
+    next();
+  } else {
+    res.redirect('/products/');
+  }
+}
+async function attachAccessory(productId, accessoryId) {
+  let product = await Cube.findById(productId)
+  let accessory = await Accessory.findById(accessoryId);
+  product.accessories.push(accessory);
+  return product.save();
+
+}
 
 module.exports = {
   create,
   getAllPuzzles,
   getDetails,
   validate,
+  attachAccessory,
+  getFullDetails,
 };

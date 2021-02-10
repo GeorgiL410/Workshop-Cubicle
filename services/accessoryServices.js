@@ -8,7 +8,6 @@ function getAll() {
   return Accessory.find().lean();
 }
 
-
 module.exports = {
   create,
   getAll,

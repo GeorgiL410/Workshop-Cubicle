@@ -4,7 +4,7 @@
       <div class="form">
         <h2>{{puzzle.name}}</h2>
         <img class="cube" src="{{puzzle.imageUrl}}">
-        <form action='' method="">
+        <form action='/products/{{puzzle._id}}/attach' method="post">
           <label for="accessory">Accessories</label>
           <select id="accessory" name="accessory">
             {{#each accessories}}

@@ -36,7 +36,8 @@ router.post('/products/create', productServices.validate, (req, res) => {
 });
 router.get('/products/details/:productId', async (req, res) => {
   let id = req.params.productId;
-  let puzzle = await productServices.getDetails(id);
+  let puzzle = await productServices.getFullDetails(id);
+  console.log(puzzle);
   res.render('details', { title: 'Product Details', puzzle });
 
 });
@@ -46,7 +47,11 @@ router.get('/products/:productId/attach', async (req, res) => {
   let puzzle = await productServices.getDetails(id);
   let accessories = await accessoryServices.getAll();
 
-  res.render('attachAccessory', {puzzle, accessories})
+  res.render('attachAccessory', { puzzle, accessories })
+});
+router.post('/products/:productId/attach', (req, res) => {
+  productServices.attachAccessory(req.params.productId, req.body.accessory)
+    .then(() => res.redirect(`/products/details/${req.params.productId}`))
 });
 
 router.get('*', (req, res) => {
