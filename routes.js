@@ -3,10 +3,13 @@
 const { Router } = require('express');
 // get the controllers
 const navigationController = require('./controllers/navigationController');
+const accessoryController = require('./controllers/accessoryController');
 
 // initialise the router 
 const router = Router();
 //use the controllers (different paths for different controllers)
+router.use('/accessories', accessoryController);
 router.use('/', navigationController);
+
 
 module.exports = router;
