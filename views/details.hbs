@@ -9,13 +9,10 @@
   </div>
   <h2>Accessories</h2>
   <div class="accessories">
-    {{#if puzzle.accessories}}
     {{#each puzzle.accessories}}
     {{>accessory}}
-    {{/each}}
     {{else}}
     <h3 class="italic">This cube has no accessories yet...</h3>
-    {{/if}}
-
+    {{/each}}
   </div>
 </main>
