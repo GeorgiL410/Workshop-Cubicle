@@ -2,7 +2,8 @@
 
 module.exports = {
     development: {
-        port: process.env.PORT || 3000
+        port: process.env.PORT || 3000,
+        DB_CONNECTION: 'mongodb+srv://testUser:testPassword@cluster0.icavt.mongodb.net/test'
     },
     production: {}
 };
