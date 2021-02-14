@@ -1,7 +1,6 @@
 //The purpose of this file is to navigate the database and record/retrieve data where necessary
 
 const Cube = require('../models/cube');
-const Generic = require('../models/Model');
 const Accessory = require('../models/Accessory');
 
 

@@ -5,7 +5,7 @@ const env = process.env.NODE_ENV || 'development';
 //initialise express
 const app = require('express')();
 //get the config from the config.js file (this gives us an object that we can call the port from)
-const config = require('./config/config')[env];
+const config = require('./config/index')[env];
 //get the routes file that holds the controllers
 const routes = require('./routes');
 //initialise express using express.js in the config folder
