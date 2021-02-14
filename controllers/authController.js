@@ -13,16 +13,28 @@ router.post('/register', async (req, res) => {
   const { username, password, repeatPassword } = req.body;
 
   if (password !== repeatPassword) {
-  
+
     return res.render('register', { message: "Password missmatch!" });
   }
 
   try {
-    await authServices.register({ username, password });
-    res.redirect('/products');
+    let user = await authServices.register({ username, password });
+    res.redirect('/auth/login');
   } catch (error) {
     res.render('register', { error });
   }
 });
 
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+
+    let token = await authServices.login({ username, password });
+    res.end();
+    console.log(token);
+  } catch (error) {
+ res.render('login', {error});
+  }
+})
 module.exports = router;
