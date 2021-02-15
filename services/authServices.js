@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { SALT_ROUNDS } = require('../config');
+const {SALT_ROUNDS, SECRET} = require('../config');
 
 async function register({ username, password }) {
 
@@ -11,24 +12,23 @@ async function register({ username, password }) {
 
   return await user.save();
 }
+const login = async ({ username, password }) => {
 
-async function login({ username, password }) {
-  console.log('here');
-
-  let user = User.findOne({ username });
-  console.log(user.password);
+  let user = await User.findOne({ username });
   if (!user) {
-    
+
     throw { message: 'User not found' };
   }
-  console.log('test2');
 
   let isMatch = await bcrypt.compare(password, user.password);
-  console.log(isMatch);
-return {empty: true}
-  //generate token
+  if (!isMatch) {
+    throw { message: 'Incorrect password!' };
+  }
+  let token = jwt.sign({ _id: user }, SECRET);
 
+  return token;
 }
+
 
 module.exports = {
   register,

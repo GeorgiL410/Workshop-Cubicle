@@ -9,7 +9,7 @@ router.get('/register', (req, res) => {
 
 });
 router.post('/register', async (req, res) => {
-  ;
+  
   const { username, password, repeatPassword } = req.body;
 
   if (password !== repeatPassword) {
@@ -27,12 +27,11 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
-
   try {
 
     let token = await authServices.login({ username, password });
-    res.end();
-    console.log(token);
+    res.cookie('USER_SESSION', token);
+    res.redirect('/products');
   } catch (error) {
  res.render('login', {error});
   }

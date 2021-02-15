@@ -3,7 +3,7 @@ const config = require('./index');
 
 
 module.exports = (app) => {
-  mongoose.connect(config.development.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true });
+  mongoose.connect(config.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true });
 
   const db = mongoose.connection;
   db.on('error', console.error.bind(console, 'connection error:'))
