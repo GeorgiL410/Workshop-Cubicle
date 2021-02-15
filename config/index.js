@@ -5,5 +5,6 @@ module.exports = {
         DB_CONNECTION: 'mongodb+srv://testUser:testPassword@cluster0.icavt.mongodb.net/test',
         SALT_ROUNDS: 10,
         SECRET: 'testsecret',
+        COOKIE_NAME: 'USER_SESSION',
  
 };

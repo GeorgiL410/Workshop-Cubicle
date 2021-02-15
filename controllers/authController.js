@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const authServices = require('../services/authServices');
+const { COOKIE_NAME } = require('../config');
 router.get('/login', (req, res) => {
   res.render('login');
 });
@@ -9,7 +10,7 @@ router.get('/register', (req, res) => {
 
 });
 router.post('/register', async (req, res) => {
-  
+
   const { username, password, repeatPassword } = req.body;
 
   if (password !== repeatPassword) {
@@ -30,10 +31,10 @@ router.post('/login', async (req, res) => {
   try {
 
     let token = await authServices.login({ username, password });
-    res.cookie('USER_SESSION', token);
+    res.cookie(COOKIE_NAME, token);
     res.redirect('/products');
   } catch (error) {
- res.render('login', {error});
+    res.render('login', { error });
   }
 })
 module.exports = router;
