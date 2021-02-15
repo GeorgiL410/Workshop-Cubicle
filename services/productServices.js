@@ -5,8 +5,8 @@ const Accessory = require('../models/Accessory');
 
 
 
-function create(data) {
-  let item = new Cube(data);
+function create(data, userId) {
+  let item = new Cube({...data, creator: userId});
   return item.save();
 }
 async function getAllPuzzles(searchParams) {
@@ -32,8 +32,8 @@ function getDetails(id) {
 }
 function getFullDetails(id) {
   return Cube.findById(id)
-  .populate('accessories')
-  .lean();
+    .populate('accessories')
+    .lean();
 }
 
 function validate(req, res, next) {
@@ -63,6 +63,13 @@ async function attachAccessory(productId, accessoryId) {
 
 }
 
+function updateOne(productId, productData) {
+  return Cube.updateOne({ _id: productId }, productData);
+}
+function deleteOne(productId) {
+  return Cube.deleteOne({ _id: productId });
+}
+
 module.exports = {
   create,
   getAllPuzzles,
@@ -70,4 +77,6 @@ module.exports = {
   validate,
   attachAccessory,
   getFullDetails,
+  updateOne,
+  deleteOne,
 };

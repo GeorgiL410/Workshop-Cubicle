@@ -21,14 +21,14 @@ router.get('/', (req, res) => {
 
 
 
-router.get('/create',isAuthenticated,  (req, res) => {
+router.get('/create', isAuthenticated, (req, res) => {
   res.render('create', { title: 'Create' });
 });
 
 router.post('/create', productServices.validate, isAuthenticated, (req, res) => {
-  productServices.create(req.body);
+  productServices.create(req.body, req.user);
 
-  res.redirect('/');
+  res.redirect('/products');
 
 });
 router.get('/details/:productId', async (req, res) => {
@@ -45,11 +45,51 @@ router.get('/:productId/attach', isAuthenticated, async (req, res) => {
 
   res.render('attachAccessory', { puzzle, accessories })
 });
-router.post('/:productId/attach',isAuthenticated, (req, res) => {
+router.post('/:productId/attach', isAuthenticated, (req, res) => {
   productServices.attachAccessory(req.params.productId, req.body.accessory)
     .then(() => res.redirect(`/products/details/${req.params.productId}`))
 });
 
+router.get('/:productId/edit', isAuthenticated, (req, res) => {
+  productServices.getDetails(req.params.productId)
+    .then(product => {
+      res.render('editCube', product)
 
+    })
+});
+
+router.post('/:productId/edit', isAuthenticated, productServices.validate, (req, res) => {
+  productServices.updateOne(req.params.productId, req.body)
+    .then(response => {
+      res.redirect(`/products/details/${req.params.productId}`)
+    })
+    .catch(error => {
+      console.log(error);
+    })
+
+});
+
+router.get('/:productId/delete', isAuthenticated, (req, res) => {
+  productServices.getDetails(req.params.productId)
+    .then(product => {
+      if (req.user._id != product.creator) {
+        res.redirect('/products');
+      } else {
+
+        res.render('deleteCube', product);
+      }
+
+    })
+});
+router.post('/:productId/delete', isAuthenticated, (req, res) => {
+  productServices.getDetails(req.params.productId)
+    .then(product => {
+      if (product._id !== req.user._id) {
+        res.redirect('/products')
+      }
+      return productServices.deleteOne(req.params.productId)
+    })
+    .then(response => res.redirect('/products'))
+});
 
 module.exports = router;

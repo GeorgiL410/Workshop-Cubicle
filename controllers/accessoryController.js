@@ -2,7 +2,6 @@ const Router = require('express').Router;
 const accessoryService = require('../services/accessoryServices');
 const router = Router();
 const isAuthenticated = require('../middlewares/isAuthenticated');
-const isGuest = require('../middlewares/isGuest');
 
 router.get('/create', isAuthenticated, (req, res) => {
 
